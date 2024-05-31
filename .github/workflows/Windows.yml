@@ -117,7 +117,7 @@ jobs:
         zip -j duckdb_odbc-windows-amd64.zip tools/odbc/bin/Release/*
         ./scripts/upload-assets-to-staging.sh github_release libduckdb-windows-amd64.zip duckdb_cli-windows-amd64.zip duckdb_odbc-windows-amd64.zip
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: duckdb-binaries-windows
         path: |
@@ -209,7 +209,7 @@ jobs:
     - name: Build
       shell: bash
       run: |
-        cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_GENERATOR_PLATFORM=Win32 -DDUCKDB_EXTENSION_CONFIGS="${GITHUB_WORKSPACE}/.github/config/bundled_extensions.cmake" -DOVERRIDE_GIT_DESCRIBE="$OVERRIDE_GIT_DESCRIBE"
+        cmake -DCMAKE_BUILD_TYPE=Release  -DCMAKE_GENERATOR_PLATFORM=Win32 -DBUILD_ODBC_DRIVER=1 -DDUCKDB_EXTENSION_CONFIGS="${GITHUB_WORKSPACE}/.github/config/bundled_extensions.cmake" -DOVERRIDE_GIT_DESCRIBE="$OVERRIDE_GIT_DESCRIBE"
         cmake --build . --config Release
 
     - name: Test
@@ -221,7 +221,24 @@ jobs:
       run: |
         python -m pytest tools/shell/tests --shell-binary Release/duckdb.exe
         tools/sqlite3_api_wrapper/Release/test_sqlite3_api_wrapper.exe
+    
+    - name: Deploy
+      shell: bash
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_DUCKDB_STAGING_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_DUCKDB_STAGING_KEY }}
+      run: |
+        python scripts/amalgamation.py
+        choco install zip -y --force
+        zip -j duckdb_odbc-windows-i586.zip tools/odbc/bin/Release/*
+        ./scripts/upload-assets-to-staging.sh github_release duckdb_odbc-windows-i586.zip
 
+    - uses: actions/upload-artifact@v4
+      with:
+        name: duckdb-binaries-windows
+        path: |
+          duckdb_odbc-windows-i586.zip
+          
  mingw:
      name: MingW (64 Bit)
      runs-on: windows-latest
