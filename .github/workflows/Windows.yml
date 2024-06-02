@@ -128,7 +128,7 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Duckdb.dll export symbols with C++ on Windows
       shell: bash
-      run: cl -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib
+      run: cl -D WIN32 -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib -MACHINE:X86
 
     - name: Install ODBC Driver
       shell: bash
