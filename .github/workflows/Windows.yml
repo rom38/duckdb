@@ -129,7 +129,7 @@ jobs:
     - name: Duckdb.dll export symbols with C++ on Windows
       shell: bash
       run: |
-        "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.39.33519/bin/HostX64/x86/cl.exe" -D WIN32 -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib -MACHINE:X86
+        "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.39.33519/bin/HostX64/x86/cl.exe" -D WIN32 -MACHINE:X86 -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
 
     - name: Install ODBC Driver
       shell: bash
