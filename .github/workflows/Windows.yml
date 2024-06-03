@@ -80,7 +80,7 @@ jobs:
       shell: bash
       run: |
         python scripts/windows_ci.py
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=Win32 -DENABLE_EXTENSION_AUTOLOADING=0 -DENABLE_EXTENSION_AUTOINSTALL=1  -DDUCKDB_EXTENSION_CONFIGS="${GITHUB_WORKSPACE}/.github/config/bundled_extensions.cmake" -DBUILD_ODBC_DRIVER=1 -DDISABLE_UNITY=1 -DOVERRIDE_GIT_DESCRIBE="$OVERRIDE_GIT_DESCRIBE"
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=Win32  -DDUCKDB_EXTENSION_CONFIGS="${GITHUB_WORKSPACE}/.github/config/bundled_extensions.cmake" -DBUILD_ODBC_DRIVER=1 -DDISABLE_UNITY=1 -DOVERRIDE_GIT_DESCRIBE="$OVERRIDE_GIT_DESCRIBE"
         cmake --build . --config Release
 
     - name: Set DUCKDB_INSTALL_LIB for ADBC tests
@@ -129,7 +129,7 @@ jobs:
     - name: Duckdb.dll export symbols with C++ on Windows
       shell: bash
       run: |
-        "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.39.33519/bin/HostX64/x86/cl.exe" -D WIN32 -MACHINE:X86 -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
+        "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.39.33519/bin/HostX64/x86/cl.exe" -D WIN32 /MACHINE:X86 -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
 
     - name: Install ODBC Driver
       shell: bash
