@@ -126,10 +126,12 @@ jobs:
           duckdb_odbc-windows-i586.zip
 
     - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: amd64_x86
     - name: Duckdb.dll export symbols with C++ on Windows
       shell: bash
       run: |
-        "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.39.33519/bin/HostX64/x86/cl.exe" -D WIN32 /MACHINE:X86 -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
+        cl -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
 
     - name: Install ODBC Driver
       shell: bash
