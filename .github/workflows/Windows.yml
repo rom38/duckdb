@@ -133,16 +133,16 @@ jobs:
       run: |
         cl -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
 
-    - uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: amd64
+    #- uses: ilammy/msvc-dev-cmd@v1
+    #  with:
+    #    arch: amd64
     - name: Install ODBC Driver
       shell: bash
       run: |
         tools/odbc/bin/Release/odbc_install.exe //CI //Install
-        Reg Query "HKLM\SOFTWARE\ODBC\ODBC.INI\ODBC Data Sources"
-        Reg Query "HKLM\SOFTWARE\ODBC\ODBC.INI\DuckDB"
-        Reg Query "HKLM\SOFTWARE\ODBC\ODBCINST.INI\DuckDB Driver"
+        Reg Query "HKLM\SOFTWARE\Wow6432Node\ODBC\ODBC.INI\ODBC Data Sources"
+        Reg Query "HKLM\SOFTWARE\Wow6432Node\ODBC\ODBC.INI\DuckDB"
+        Reg Query "HKLM\SOFTWARE\Wow6432Node\ODBC\ODBCINST.INI\DuckDB Driver"
 
     - name: Enable ODBC Trace HKCU
       shell: bash
