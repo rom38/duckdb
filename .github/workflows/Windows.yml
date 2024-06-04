@@ -133,6 +133,9 @@ jobs:
       run: |
         cl -I src/include examples/embedded-c++-windows/cppintegration.cpp -link src/Release/duckdb.lib 
 
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: amd64
     - name: Install ODBC Driver
       shell: bash
       run: |
